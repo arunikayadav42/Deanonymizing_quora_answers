@@ -14,7 +14,7 @@ from nltk.stem.porter import PorterStemmer
 
 #importing the dataset
 
-path1 = '/media/harshika/Work/Projects/Author-Identifier/datasets/C50train/'
+path1 = 'C50train/'
 authors = os.listdir(path1)[:50]
 
 y_train = []
@@ -40,7 +40,7 @@ for auth in authors:
         X_train = np.append(X_train,cleaned)
         #X_train = ' '.join(X_train)
         f.close()
-path2 = '/media/harshika/Work/Projects/Author-Identifier/datasets/C50test/'
+path2 = 'C50test/'
 authors = os.listdir(path2)[:50]
 for auth in authors:  
 
@@ -61,7 +61,6 @@ for auth in authors:
          X_train = np.append(X_train,cleaned)
          f.close()
  # Creating the Bag of Words Model
- 
 from sklearn.feature_extraction.text import CountVectorizer
 cv = CountVectorizer()        
 
@@ -74,10 +73,21 @@ y = y_train
 from sklearn.model_selection import train_test_split
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, random_state=0)
 
-# Fitting classifier to the Training set
-from sklearn.naive_bayes import GaussianNB
-classifier = GaussianNB()
+# Fitting Naive Bayes classifier to the Training set
+#from sklearn.naive_bayes import GaussianNB
+#classifier = GaussianNB()
+#classifier.fit(X_train, y_train)
+
+#Fitting SVM Classifier to the training set
+from sklearn.svm import SVC
+classifier = SVC(kernel = 'linear', random_state = 0)
 classifier.fit(X_train, y_train)
+
+#Fitting Logistic Regression to the training set
+from sklearn.linear_model import LogisticRegression
+classifier = LogisticRegression()
+classifier.fit(X_train, y_train)
+
 
 # Predicting the Test set results
 y_pred = classifier.predict(X_test)
@@ -89,3 +99,5 @@ cm = confusion_matrix(y_test, y_pred)
 accuracy = np.trace(cm)
 print ((2500-accuracy)/25)
 
+#visualizing training set results
+from matplotlib.colors import ListedColorMaps 
